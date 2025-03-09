@@ -187,8 +187,6 @@ services:
     volumes:
       - '/docker/appdata/plex:/config'
       - '/mnt/network_share/data/media:/data/media'
-    ports:
-      - '3001:3001'
     restart: unless-stopped
     network_mode: host
 
