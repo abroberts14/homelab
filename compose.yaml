@@ -42,6 +42,7 @@ networks:
       - grafana
       - prometheus
       - gluetun
+
   gluetun:
     container_name: gluetun
     image: qmcgaw/gluetun
@@ -76,12 +77,11 @@ networks:
       - '3000:3000' #grafana
     volumes:
       - 'gluetun:/gluetun'
-
     restart: unless-stopped
+
   qbittorrent:
     image: linuxserver/qbittorrent
     container_name: qbittorrent
-
     environment:
       - PUID
       - PGID
@@ -92,9 +92,9 @@ networks:
       - '/data/torrents:/data/torrents'
     restart: unless-stopped
     network_mode: "service:gluetun"
-    
     depends_on:
       - gluetun
+
   tautulli:
     image: linuxserver/tautulli
     container_name: tautulli
@@ -193,6 +193,7 @@ networks:
       - '/mnt/network_share/data/media:/data/media'
     restart: unless-stopped
     network_mode: host
+
   jellyfin:
     image: 'lscr.io/linuxserver/jellyfin:latest'
     container_name: jellyfin
@@ -210,6 +211,7 @@ networks:
       - '1900:1900/udp'
     restart: unless-stopped
     network_mode: host
+
   channels-dvr:
     image: 'fancybits/channels-dvr:tve'
     container_name: channels-dvr
@@ -224,5 +226,4 @@ networks:
       - '/mnt/network_share/data/dvr/recordings:/shares/DVR'
 volumes:
   gluetun: null
-  prometheus: null
-  grafana: null
+
