@@ -39,8 +39,7 @@ networks:
       - tautulli
       - overseerr
       - channels-dvr
-      - grafana
-      - prometheus
+      - uptime-kuma
       - gluetun
 
   gluetun:
@@ -73,8 +72,6 @@ networks:
       - '5055:5055'
       - '6881:6881'
       - '6881:6881/udp'
-      - '9090:9090' #grafana
-      - '3000:3000' #grafana
     volumes:
       - 'gluetun:/gluetun'
     restart: unless-stopped
@@ -172,7 +169,6 @@ networks:
 
   uptime-kuma:
     image: louislam/uptime-kuma:1
-    container_name: uptime-kuma
     network_mode: host
     restart: always
     ports:
@@ -191,6 +187,8 @@ networks:
     volumes:
       - '/docker/appdata/plex:/config'
       - '/mnt/network_share/data/media:/data/media'
+    ports:
+      - '3001:3001'
     restart: unless-stopped
     network_mode: host
 
