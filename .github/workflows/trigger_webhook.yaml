@@ -1,0 +1,17 @@
+name: Trigger Webhook on Push to Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl request
+        env:
+          COOLIFY_WEBHOOK: ${{ secrets.COOLIFY_WEBHOOK }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+        run: |
+          curl --request GET "${COOLIFY_WEBHOOK}" --header "Authorization: Bearer ${COOLIFY_TOKEN}"
