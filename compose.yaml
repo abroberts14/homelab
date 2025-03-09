@@ -16,17 +16,17 @@ services:
     cap_add:
       - NET_ADMIN
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - URL=${URL}
-      - SUBDOMAINS=${SUBDOMAINS}
-      - VALIDATION=${VALIDATION}
-      - DNSPLUGIN=${DNSPLUGIN}
-      - CERTPROVIDER=${CERTPROVIDER}
-      - SWAG_AUTORELOAD=${SWAG_AUTORELOAD}
-      - DUCKDNSTOKEN=${DUCKDNSTOKEN}
-      - EMAIL=${EMAIL}
+      - PUID
+      - PGID
+      - TZ
+      - URL
+      - SUBDOMAINS
+      - VALIDATION
+      - DNSPLUGIN
+      - CERTPROVIDER
+      - SWAG_AUTORELOAD
+      - DUCKDNSTOKEN
+      - EMAIL
 
     volumes:
       - '/docker/appdata/swag:/config'
@@ -51,15 +51,15 @@ services:
     devices:
       - '/dev/net/tun:/dev/net/tun'
     environment:
-      - FIREWALL_INPUT_PORTS=${FIREWALL_INPUT_PORTS}
-      - FIREWALL_OUTBOUND_SUBNETS=${FIREWALL_OUTBOUND_SUBNETS}
-      - VPN_SERVICE_PROVIDER=${VPN_SERVICE_PROVIDER}
-      - VPN_TYPE=${VPN_TYPE}
-      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
-      - SERVER_COUNTRIES=${SERVER_COUNTRIES}
-      - TZ=${TZ}
-      - DNS=${DNS}
-      - DNS_BIND_IP=${DNS_BIND_IP}
+      - FIREWALL_INPUT_PORTS
+      - FIREWALL_OUTBOUND_SUBNETS
+      - VPN_SERVICE_PROVIDER
+      - VPN_TYPE
+      - WIREGUARD_PRIVATE_KEY
+      - SERVER_COUNTRIES
+      - TZ
+      - DNS
+      - DNS_BIND_IP
     ports:
       - '443:443' #swag  
       - '80:80' #swag  
@@ -79,10 +79,10 @@ services:
     container_name: qbittorrent
 
     environment:
-      - PUID={PUID}
-      - PGID={PGID}
-      - TZ={TZ}
-      - WEBUI_PORT={WEBUI_PORT}
+      - PUID
+      - PGID
+      - TZ
+      - WEBUI_PORT
     volumes:
       - '/docker/appdata/qbittorrent:/config'
       - '/data/torrents:/data/torrents'
@@ -95,9 +95,9 @@ services:
     image: linuxserver/tautulli
     container_name: tautulli
     environment:
-      - PUID={PUID}
-      - PGID={PGID}
-      - TZ={TZ}
+      - PUID
+      - PGID
+      - TZ
     volumes:
       - '/docker/appdata/tautulli:/config'
     restart: unless-stopped
@@ -109,9 +109,9 @@ services:
     image: linuxserver/radarr
     container_name: radarr
     environment:
-      - PUID={PUID}
-      - PGID={PGID}
-      - TZ={TZ}
+      - PUID
+      - PGID
+      - TZ
     volumes:
       - '/docker/appdata/radarr:/config'
       - '/mnt/network_share/data:/data'
@@ -125,9 +125,9 @@ services:
     image: linuxserver/sonarr
     container_name: sonarr
     environment:
-      - PUID={PUID}
-      - PGID={PGID}
-      - TZ={TZ}
+      - PUID
+      - PGID
+      - TZ
     volumes:
       - '/docker/appdata/sonarr:/config'
       - '/mnt/network_share/data:/data'
@@ -141,9 +141,9 @@ services:
     image: 'lscr.io/linuxserver/overseerr:latest'
     container_name: overseerr
     environment:
-      - PUID={PUID}
-      - PGID={PGID}
-      - TZ={TZ}
+      - PUID
+      - PGID
+      - TZ
     volumes:
       - '/docker/appdata/overseerr:/config'
     restart: unless-stopped
@@ -155,9 +155,9 @@ services:
     image: 'lscr.io/linuxserver/prowlarr:latest'
     container_name: prowlarr
     environment:
-      - PUID={PUID}
-      - PGID={PGID}
-      - TZ={TZ}
+      - PUID
+      - PGID
+      - TZ
     volumes:
       - '/docker/appdata/prowlarr:/config'
     restart: unless-stopped
@@ -169,10 +169,10 @@ services:
     image: 'lscr.io/linuxserver/plex:latest'
     container_name: plex
     environment:
-      - PUID={PUID}
-      - PGID={PGID}
-      - TZ={TZ}
-      - VERSION={VERSION}
+      - PUID
+      - PGID
+      - TZ
+      - VERSION
     volumes:
       - '/docker/appdata/plex:/config'
       - '/mnt/network_share/data/media:/data/media'
@@ -182,9 +182,9 @@ services:
     image: 'lscr.io/linuxserver/jellyfin:latest'
     container_name: jellyfin
     environment:
-      - PUID={PUID}
-      - PGID={PGID}
-      - TZ={TZ}
+      - PUID
+      - PGID
+      - TZ
     volumes:
       - '/docker/appdata/jellyfin:/config'
       - '/mnt/network_share/data/media:/data/media'
