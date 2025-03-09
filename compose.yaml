@@ -169,6 +169,17 @@ networks:
 
     depends_on:
       - gluetun
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    network_mode: host
+    restart: always
+    ports:
+      - "3001:3001"
+    volumes:
+      - '/docker/appdata/uptime_kuma:/app/data'
+
   plex:
     image: 'lscr.io/linuxserver/plex:latest'
     container_name: plex
