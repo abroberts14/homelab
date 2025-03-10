@@ -71,6 +71,7 @@ services:
       - '8181:8181'
       - '5055:5055'
       - '6881:6881'
+      - '8080:8080'
       - '6881:6881/udp'
     volumes:
       - 'gluetun:/gluetun'
@@ -152,6 +153,7 @@ services:
 
     depends_on:
       - gluetun
+
   prowlarr:
     image: 'lscr.io/linuxserver/prowlarr:latest'
     container_name: prowlarr
@@ -161,6 +163,24 @@ services:
       - TZ
     volumes:
       - '/docker/appdata/prowlarr:/config'
+    restart: unless-stopped
+    network_mode: "service:gluetun"
+
+    depends_on:
+      - gluetun
+
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID
+      - PGID
+      - TZ
+    volumes:
+      - '/docker/appdata/sabnzbd:/config'
+      - '/data/sabnzbd_downloads:/data/sabnzbd_downloads'
+    ports:
+      - 8080:8080
     restart: unless-stopped
     network_mode: "service:gluetun"
 
