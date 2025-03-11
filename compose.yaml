@@ -118,6 +118,8 @@ services:
       - '/docker/appdata/radarr:/config'
       - '/mnt/network_share/data:/data'
       - '/data/torrents:/data/torrents'
+      - '/data/sabnzbd_downloads:/data/sabnzbd_downloads'
+
     restart: unless-stopped
     network_mode: "service:gluetun"
 
@@ -134,6 +136,8 @@ services:
       - '/docker/appdata/sonarr:/config'
       - '/mnt/network_share/data:/data'
       - '/data/torrents:/data/torrents'
+      - '/data/sabnzbd_downloads:/data/sabnzbd_downloads'
+
     restart: unless-stopped
     network_mode: "service:gluetun"
  
@@ -178,7 +182,7 @@ services:
       - TZ
     volumes:
       - '/docker/appdata/sabnzbd:/config'
-      - '/data/sabnzbd_downloads:/data/sabnzbd_downloads'
+      - '/data/sabnzbd_downloads:/config/data/sabnzbd_downloads'
 
     restart: unless-stopped
     network_mode: "service:gluetun"
