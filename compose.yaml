@@ -118,7 +118,7 @@ services:
       - '/docker/appdata/radarr:/config'
       - '/mnt/network_share/data:/data'
       - '/data/torrents:/data/torrents'
-      - '/data/sabnzbd_downloads/complete:/data/sabnzbd_downloads/complete'
+      - '/data/sabnzbd_downloads/complete:/config/Downloads/complete'
 
     restart: unless-stopped
     network_mode: "service:gluetun"
@@ -136,7 +136,7 @@ services:
       - '/docker/appdata/sonarr:/config'
       - '/mnt/network_share/data:/data'
       - '/data/torrents:/data/torrents'
-      - '/data/sabnzbd_downloads/complete:/data/sabnzbd_downloads/complete'
+      - '/data/sabnzbd_downloads/complete:/config/Downloads/complete'
 
     restart: unless-stopped
     network_mode: "service:gluetun"
