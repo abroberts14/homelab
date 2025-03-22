@@ -40,6 +40,7 @@ services:
       - overseerr
       - channels-dvr
       - uptime-kuma
+      - calibre-web-automated
       - gluetun
 
   gluetun:
@@ -72,6 +73,7 @@ services:
       - '5055:5055'
       - '6881:6881'
       - '8080:8080'
+      - '8083:8083' #calibre web
       - '6881:6881/udp'
     volumes:
       - 'gluetun:/gluetun'
@@ -244,6 +246,28 @@ services:
     volumes:
       - '/docker/appdata/dvr:/channels-dvr'
       - '/mnt/network_share/data/dvr/recordings:/shares/DVR'
+
+  calibre-web-automated:
+    image: crocodilestick/calibre-web-automated:latest
+    container_name: calibre-web-automated
+    environment:
+      # Only change these if you know what you're doing
+      - PUID
+      - PGID
+      - TZ
+    volumes:
+      # CW users migrating should stop their existing CW instance, make a copy of the config folder, and bind that here to carry over all of their user settings ect.
+      - '/docker/appdata/calibre_web:/config'
+
+      # This is an ingest dir, NOT a library one. Anything added here will be automatically added to your library according to the settings you have configured in CWA Settings page. All files placed here are REMOVED AFTER PROCESSING
+      - '/data/book_downloads:/data/book_downloads'
+      # If you don't have an existing library, CWA will automatically create one at the bind provided here
+      - /mnt/network_share/data/media:/calibre-library 
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
 volumes:
   gluetun: null
 
