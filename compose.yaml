@@ -41,6 +41,7 @@ services:
       - channels-dvr
       - uptime-kuma
       - calibre-web-automated
+      - lazylibrarian
       - gluetun
 
   gluetun:
@@ -73,6 +74,7 @@ services:
       - '5055:5055'
       - '6881:6881'
       - '8080:8080'
+      - '5299:5299'  #lazylib
       - '8083:8083' #calibre web
       - '6881:6881/udp'
     volumes:
@@ -260,13 +262,30 @@ services:
       - '/docker/appdata/calibre_web:/config'
 
       # This is an ingest dir, NOT a library one. Anything added here will be automatically added to your library according to the settings you have configured in CWA Settings page. All files placed here are REMOVED AFTER PROCESSING
-      - '/data/book_downloads:/data/book_downloads'
+      - '/data/book_ingest:/data/book_ingest'
       # If you don't have an existing library, CWA will automatically create one at the bind provided here
-      - /mnt/network_share/data/media:/calibre-library 
+      - '/mnt/network_share/data:/calibre-library'
     network_mode: "service:gluetun"
     depends_on:
       - gluetun
     restart: unless-stopped
+
+  lazylibrarian:
+    image: lscr.io/linuxserver/lazylibrarian:latest
+    container_name: lazylibrarian
+    environment:
+      - PUID
+      - PGID
+      - TZ
+    volumes:
+      - '/docker/appdata/lazylibrarian:/config'
+      - '/data/book_downloads:/data/book_downloads'
+      - '/mnt/network_share/data:/data'
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+
 
 volumes:
   gluetun: null
