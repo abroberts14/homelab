@@ -4,6 +4,23 @@ networks:
     external: true
 
 services:
+  watchtower:
+    image: ghcr.io/nicholas-fedor/watchtower:latest   # same image is also pushed as nickfedor/watchtower
+    container_name: watchtower
+    # Pull new images through the VPN like the rest of the stack
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro   # let Watchtower talk to the Docker daemon
+    environment:
+      - TZ=${TZ}                       # reuse the timezone you already export
+      - WATCHTOWER_CLEANUP=true        # delete old images after upgrade
+      - WATCHTOWER_SCHEDULE=0 0 4 * * *  # run daily at 04:00 local time (cron syntax)
+      # OPTIONAL – notifications
+      # - WATCHTOWER_NOTIFICATIONS=shoutrrr
+      # - WATCHTOWER_NOTIFICATION_URL=ntfy://YOUR_TOPIC
+    restart: unless-stopped
   swag:
     image: lscr.io/linuxserver/swag
     container_name: swag
@@ -39,6 +56,8 @@ services:
       - calibre-web-automated
       - lazylibrarian
       - gluetun
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
 
   gluetun:
     container_name: gluetun
@@ -60,6 +79,8 @@ services:
       - TZ
       - DNS
       - DNS_BIND_IP
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
     ports:
       - '443:443' #swag  
       - '80:80' #swag  
@@ -282,7 +303,20 @@ services:
       - gluetun
     restart: unless-stopped
 
+# Container‑management UI
+  yacht:
+    image: selfhostedpro/yacht:latest
+    container_name: yacht
+    ports:
+      - "8000:8000"            # Web UI http://<host>:8000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - yacht_data:/config
+    networks:
+      - coolify                # share external network with other services
+    restart: unless-stopped
 
 volumes:
   gluetun: null
+  yacht_data:
 
