@@ -303,20 +303,7 @@ services:
       - gluetun
     restart: unless-stopped
 
-# Container‑management UI
-  yacht:
-    image: selfhostedpro/yacht:latest
-    container_name: yacht
-    ports:
-      - "8000:8000"            # Web UI http://<host>:8000
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - yacht_data:/config
-    networks:
-      - coolify                # share external network with other services
-    restart: unless-stopped
 
 volumes:
   gluetun: null
-  yacht_data:
 
