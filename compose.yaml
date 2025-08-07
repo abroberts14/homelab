@@ -1,7 +1,3 @@
-# networks:
-#   coolify:
-#     name: app_network
-#     driver: bridge
 
 networks:
   coolify:
