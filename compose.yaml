@@ -21,6 +21,7 @@ services:
       # - WATCHTOWER_NOTIFICATIONS=shoutrrr
       # - WATCHTOWER_NOTIFICATION_URL=ntfy://YOUR_TOPIC
     restart: unless-stopped
+
   swag:
     image: lscr.io/linuxserver/swag
     container_name: swag
@@ -49,7 +50,6 @@ services:
       - radarr
       - sonarr
       - prowlarr
-      - tautulli
       - overseerr
       - channels-dvr
       - uptime-kuma
@@ -58,6 +58,17 @@ services:
       - gluetun
     labels:
       - "com.centurylinklabs.watchtower.enable=false"
+
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - SUBDOMAINS=aarondawg              # e.g., routz-server
+      - TOKEN=${DUCKDNSTOKEN}     # <-- maps to your Coolify env
+    restart: unless-stopped
 
   gluetun:
     container_name: gluetun
@@ -114,20 +125,7 @@ services:
     depends_on:
       - gluetun
 
-  tautulli:
-    image: linuxserver/tautulli
-    container_name: tautulli
-    environment:
-      - PUID
-      - PGID
-      - TZ
-    volumes:
-      - '/docker/appdata/tautulli:/config'
-    restart: unless-stopped
-    network_mode: "service:gluetun"
- 
-    depends_on:
-      - gluetun
+  
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -190,7 +188,6 @@ services:
       - '/docker/appdata/prowlarr:/config'
     restart: unless-stopped
     network_mode: "service:gluetun"
-
     depends_on:
       - gluetun
 
