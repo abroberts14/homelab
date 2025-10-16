@@ -1,4 +1,3 @@
-
 networks:
   coolify:
     external: true
@@ -21,11 +20,11 @@ services:
       # - WATCHTOWER_NOTIFICATIONS=shoutrrr
       # - WATCHTOWER_NOTIFICATION_URL=ntfy://YOUR_TOPIC
     restart: unless-stopped
+
   swag:
     image: lscr.io/linuxserver/swag
     container_name: swag
     network_mode: "service:gluetun"
-
     cap_add:
       - NET_ADMIN
     environment:
@@ -40,7 +39,6 @@ services:
       - SWAG_AUTORELOAD
       - DUCKDNSTOKEN
       - EMAIL
-
     volumes:
       - '/docker/appdata/swag:/config'
     restart: unless-stopped
@@ -55,6 +53,7 @@ services:
       - uptime-kuma
       - calibre-web-automated
       - lazylibrarian
+      - bazarr
       - gluetun
     labels:
       - "com.centurylinklabs.watchtower.enable=false"
@@ -64,7 +63,7 @@ services:
     image: qmcgaw/gluetun
     hostname: gluetun
     networks:
-      - coolify  # Uses the same network as Gluetun   
+      - coolify  # Uses the same network as Gluetun
     cap_add:
       - NET_ADMIN
     devices:
@@ -82,18 +81,19 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=false"
     ports:
-      - '443:443' #swag  
-      - '80:80' #swag  
-      - '8989:8989' #other
-      - '7878:7878' #radarr
-      - '9696:9696' #sonarrr
+      - '443:443'   # swag
+      - '80:80'     # swag
+      - '8989:8989' # other
+      - '7878:7878' # radarr
+      - '9696:9696' # sonarrr
       - '8181:8181'
       - '5055:5055'
       - '6881:6881'
       - '8080:8080'
-      - '5299:5299'  #lazylib
-      - '8083:8083' #calibre web
+      - '5299:5299'  # lazylib
+      - '8083:8083'  # calibre web
       - '6881:6881/udp'
+      - '6767:6767'  # bazarr
     volumes:
       - 'gluetun:/gluetun'
     restart: unless-stopped
@@ -125,9 +125,9 @@ services:
       - '/docker/appdata/tautulli:/config'
     restart: unless-stopped
     network_mode: "service:gluetun"
- 
     depends_on:
       - gluetun
+
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -140,12 +140,11 @@ services:
       - '/mnt/network_share/data:/data'
       - '/data/torrents:/data/torrents'
       - '/data/sabnzbd_downloads/complete:/config/Downloads/complete'
-
     restart: unless-stopped
     network_mode: "service:gluetun"
-
     depends_on:
       - gluetun
+
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -158,12 +157,11 @@ services:
       - '/mnt/network_share/data:/data'
       - '/data/torrents:/data/torrents'
       - '/data/sabnzbd_downloads/complete:/config/Downloads/complete'
-
     restart: unless-stopped
     network_mode: "service:gluetun"
- 
     depends_on:
       - gluetun
+
   overseerr:
     image: 'lscr.io/linuxserver/overseerr:latest'
     container_name: overseerr
@@ -175,7 +173,6 @@ services:
       - '/docker/appdata/overseerr:/config'
     restart: unless-stopped
     network_mode: "service:gluetun"
-
     depends_on:
       - gluetun
 
@@ -190,7 +187,6 @@ services:
       - '/docker/appdata/prowlarr:/config'
     restart: unless-stopped
     network_mode: "service:gluetun"
-
     depends_on:
       - gluetun
 
@@ -204,11 +200,8 @@ services:
     volumes:
       - '/docker/appdata/sabnzbd:/config'
       - '/data/sabnzbd_downloads/complete:/config/Downloads/complete'
-
-
     restart: unless-stopped
     network_mode: "service:gluetun"
-
     depends_on:
       - gluetun
 
@@ -277,7 +270,6 @@ services:
     volumes:
       # CW users migrating should stop their existing CW instance, make a copy of the config folder, and bind that here to carry over all of their user settings ect.
       - '/docker/appdata/calibre_web:/config'
-
       # This is an ingest dir, NOT a library one. Anything added here will be automatically added to your library according to the settings you have configured in CWA Settings page. All files placed here are REMOVED AFTER PROCESSING
       - '/data/book_ingest:/data/book_ingest'
       # If you don't have an existing library, CWA will automatically create one at the bind provided here
@@ -303,7 +295,22 @@ services:
       - gluetun
     restart: unless-stopped
 
-# Container‑management UI
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID
+      - PGID
+      - TZ
+    volumes:
+      - '/docker/appdata/bazarr:/config'
+      - '/mnt/network_share/data:/data'
+    restart: unless-stopped
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+
+  # Container-management UI
   yacht:
     image: selfhostedpro/yacht:latest
     container_name: yacht
@@ -319,4 +326,3 @@ services:
 volumes:
   gluetun: null
   yacht_data:
-
