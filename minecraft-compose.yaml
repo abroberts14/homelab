@@ -1,20 +1,23 @@
 version: "3.9"
 
 services:
-  bed-rock:
-    image: itzg/minecraft-server:latest
-    container_name: bed-rock
+  bedrock:
+    image: itzg/minecraft-bedrock-server:latest
+    container_name: bedrock
     networks:
       - coolify
     ports:
-      - "25565:25565"
+      - "19132:19132/udp"
     environment:
       - EULA=TRUE
-      - VERSION=1.21.4
-      - MEMORY=4G
       - TZ=America/New_York
+      - SERVER_NAME=Buffalo Bolt Bedrock
+      - GAMEMODE=survival
+      - DIFFICULTY=normal
+      - ALLOW_CHEATS=false
+      - ONLINE_MODE=true
     volumes:
-      - ./data:/data
+      - /docker/appdata/minecraft-bedrock:/data
     restart: unless-stopped
 
 networks:
