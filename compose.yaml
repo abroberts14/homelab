@@ -49,7 +49,7 @@ services:
       - prowlarr
       - overseerr
       - channels-dvr
-      - uptime-kuma
+      # - uptime-kuma
       - calibre-web-automated
       # - lazylibrarian
       - bazarr
@@ -204,14 +204,14 @@ services:
     depends_on:
       - gluetun
 
-  uptime-kuma:
-    image: louislam/uptime-kuma:1
-    network_mode: host
-    restart: always
-    ports:
-      - "3001:3001"
-    volumes:
-      - '/docker/appdata/uptime_kuma:/app/data'
+  # uptime-kuma:
+  #   image: louislam/uptime-kuma:1
+  #   network_mode: host
+  #   restart: always
+  #   ports:
+  #     - "3001:3001"
+  #   volumes:
+  #     - '/docker/appdata/uptime_kuma:/app/data'
 
   plex:
     image: 'lscr.io/linuxserver/plex:latest'
@@ -227,23 +227,23 @@ services:
     restart: unless-stopped
     network_mode: host
 
-  jellyfin:
-    image: 'lscr.io/linuxserver/jellyfin:latest'
-    container_name: jellyfin
-    environment:
-      - PUID
-      - PGID
-      - TZ
-    volumes:
-      - '/docker/appdata/jellyfin:/config'
-      - '/mnt/network_share/data/media:/data/media'
-    ports:
-      - '8096:8096'
-      - '8920:8920'
-      - '7359:7359/udp'
-      - '1900:1900/udp'
-    restart: unless-stopped
-    network_mode: host
+  # jellyfin:
+  #   image: 'lscr.io/linuxserver/jellyfin:latest'
+  #   container_name: jellyfin
+  #   environment:
+  #     - PUID
+  #     - PGID
+  #     - TZ
+  #   volumes:
+  #     - '/docker/appdata/jellyfin:/config'
+  #     - '/mnt/network_share/data/media:/data/media'
+  #   ports:
+  #     - '8096:8096'
+  #     - '8920:8920'
+  #     - '7359:7359/udp'
+  #     - '1900:1900/udp'
+  #   restart: unless-stopped
+  #   network_mode: host
 
   channels-dvr:
     image: 'fancybits/channels-dvr:tve'
