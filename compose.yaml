@@ -51,8 +51,9 @@ services:
       - channels-dvr
       - uptime-kuma
       - calibre-web-automated
-      - lazylibrarian
+      # - lazylibrarian
       - bazarr
+      - pulsarr
       - gluetun
     labels:
       - "com.centurylinklabs.watchtower.enable=false"
@@ -100,10 +101,11 @@ services:
       - '5055:5055'
       - '6881:6881'
       - '8080:8080'
-      - '5299:5299'  # lazylib
+     # - '5299:5299'  # lazylib
       - '8083:8083'  # calibre web
       - '6881:6881/udp'
       - '6767:6767'  # bazarr
+      - '3003:3003'  # pulsarr
     volumes:
       - 'gluetun:/gluetun'
     restart: unless-stopped
@@ -276,21 +278,21 @@ services:
       - gluetun
     restart: unless-stopped
 
-  lazylibrarian:
-    image: lscr.io/linuxserver/lazylibrarian:latest
-    container_name: lazylibrarian
-    environment:
-      - PUID
-      - PGID
-      - TZ
-    volumes:
-      - '/docker/appdata/lazylibrarian:/config'
-      - '/data/book_downloads:/data/book_downloads'
-      - '/mnt/network_share/data:/data'
-    network_mode: "service:gluetun"
-    depends_on:
-      - gluetun
-    restart: unless-stopped
+  # lazylibrarian:
+  #   image: lscr.io/linuxserver/lazylibrarian:latest
+  #   container_name: lazylibrarian
+  #   environment:
+  #     - PUID
+  #     - PGID
+  #     - TZ
+  #   volumes:
+  #     - '/docker/appdata/lazylibrarian:/config'
+  #     - '/data/book_downloads:/data/book_downloads'
+  #     - '/mnt/network_share/data:/data'
+  #   network_mode: "service:gluetun"
+  #   depends_on:
+  #     - gluetun
+  #   restart: unless-stopped
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
@@ -306,6 +308,22 @@ services:
     network_mode: "service:gluetun"
     depends_on:
       - gluetun
+
+  pulsarr:
+    image: lakker/pulsarr:latest
+    container_name: pulsarr
+    environment:
+      - TZ
+      - baseUrl=http://localhost
+      - port=3003
+    volumes:
+      - '/docker/appdata/pulsarr:/app/data'
+    restart: unless-stopped
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+      - sonarr
+      - radarr
 
   # Container-management UI
   # yacht:
