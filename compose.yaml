@@ -323,7 +323,3 @@ services:
 volumes:
   gluetun: null
   # yacht_data:
-
-volumes:
-  gluetun: null
-
