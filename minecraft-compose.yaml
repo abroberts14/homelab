@@ -11,9 +11,10 @@ services:
     environment:
       - EULA=TRUE
       - TZ=America/New_York
+      - VERSION=LATEST
       - SERVER_NAME=Buffalo Bolt Bedrock
       - GAMEMODE=survival
-      - DIFFICULTY=normal
+      - DIFFICULTY=easy
       - ALLOW_CHEATS=false
       - ONLINE_MODE=true
     volumes:
