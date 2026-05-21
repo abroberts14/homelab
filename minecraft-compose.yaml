@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   bedrock:
-    image: itzg/minecraft-bedrock-server:latest
+    image: itzg/minecraft-bedrock-server:stable
     container_name: bedrock
     networks:
       - coolify
