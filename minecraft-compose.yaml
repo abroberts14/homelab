@@ -11,7 +11,10 @@ services:
     environment:
       - EULA=TRUE
       - TZ=America/New_York
-      - VERSION=LATEST
+      # VERSION=LATEST relies on scraping minecraft.net, which periodically
+      # returns 500 when Mojang changes/rate-limits the endpoint. Pin a known
+      # version and bump manually until the upstream itzg image fixes it.
+      - VERSION=1.26.30.30
       - SERVER_NAME=Buffalo Bolt Bedrock
       - GAMEMODE=survival
       - DIFFICULTY=easy
